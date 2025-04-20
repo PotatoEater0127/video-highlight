@@ -100,7 +100,7 @@ export const TranscriptEditor: React.FC = () => {
 
   return (
     <div ref={editorRef} className="h-full overflow-y-auto p-4">
-      <h2 className="text-xl font-bold mb-4">Transcript</h2>
+      <h2 className="text-2xl font-bold mb-4">Transcript</h2>
       {transcript.sections.map(renderSection)}
     </div>
   );
