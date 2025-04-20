@@ -1,54 +1,56 @@
-# React + TypeScript + Vite
+# Video Highlight Tool
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A web application for creating highlight clips from videos using AI-powered transcript generation.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Upload video files
+- AI-powered transcript generation (mocked for this demo)
+- Split-screen interface with editing area and preview
+- Select/unselect sentences for highlights
+- Video playback with timeline visualization
+- Transcript overlay on the video
 
-## Expanding the ESLint configuration
+## Technology Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- React 19
+- TypeScript
+- Tailwind CSS
+- Zustand (State management)
+- Vite (Build tool)
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## Getting Started
+
+### Prerequisites
+
+- Node.js 18+ and npm
+
+### Installation
+
+1. Clone the repository
+2. Install dependencies:
+
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+3. Start the development server:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+```bash
+npm run dev
 ```
+
+## Usage
+
+1. Upload a video file using the drag-and-drop interface or file selector
+2. Wait for the AI to process the video and generate a transcript
+3. Use the left panel to select/unselect sentences for your highlight clip
+4. Preview your highlight clip in the right panel
+5. Click on timestamps to navigate to specific parts of the video
+
+## Project Structure
+
+- `src/components/` - React components
+- `src/services/` - Mock API services
+- `src/store.ts` - Zustand store for state management
+- `src/types.ts` - TypeScript type definitions

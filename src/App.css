@@ -40,3 +40,32 @@
 .read-the-docs {
   color: #888;
 }
+
+/* Custom App Styles */
+.video-highlight-tool {
+  --primary-color: #3b82f6;
+  --primary-hover: #2563eb;
+  --secondary-color: #64748b;
+  --secondary-hover: #475569;
+  --highlight-color: #93c5fd;
+  --active-sentence: #fef3c7;
+}
+
+/* Custom scrollbar styles */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a0a0a0;
+}
