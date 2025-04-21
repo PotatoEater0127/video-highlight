@@ -1,43 +1,31 @@
+import { useShallow } from "zustand/shallow";
 import "./App.css";
-import { Spinner } from "./components/Spinner";
-import { TranscriptEditor } from "./components/TranscriptEditor";
-import { VideoPlayer } from "./components/VideoPlayer";
-import { VideoUpload } from "./components/VideoUpload";
+import LoadingPage from "./pages/Loading";
+import MainPage from "./pages/Main";
+import UploadPage from "./pages/Upload";
 import { useHighlightStore } from "./store";
 
 function App() {
-  const { video, isProcessing } = useHighlightStore();
+  const { video, isProcessing } = useHighlightStore(
+    useShallow((state) => ({
+      video: state.video,
+      isProcessing: state.isProcessing,
+    }))
+  );
+
+  const renderPage = () => {
+    if (isProcessing) {
+      return <LoadingPage />;
+    }
+    if (!video) {
+      return <UploadPage />;
+    }
+    return <MainPage />;
+  };
 
   return (
     <main className="flex items-center justify-center h-screen p-1">
-      {!video && !isProcessing && (
-        <div className="max-w-lg mx-auto my-8">
-          <h2 className="text-xl font-semibold mb-4">
-            Upload a video to get started
-          </h2>
-          <VideoUpload />
-        </div>
-      )}
-
-      {isProcessing && (
-        <div className="flex flex-col items-center justify-center h-64">
-          <Spinner />
-          <p className="mt-4 text-gray-600">
-            Processing video and generating transcript...
-          </p>
-        </div>
-      )}
-
-      {video && !isProcessing && (
-        <div className="flex rounded-md  h-screen">
-          <div className="flex-1">
-            <TranscriptEditor />
-          </div>
-          <div className="flex-1">
-            <VideoPlayer />
-          </div>
-        </div>
-      )}
+      {renderPage()}
     </main>
   );
 }
