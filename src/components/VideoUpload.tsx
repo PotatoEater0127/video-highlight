@@ -1,35 +1,12 @@
-import { useRef, useState } from "react";
 import { processVideo } from "../services/mockApi";
 import { useHighlightStore } from "../store";
 
 export const VideoUpload: React.FC = () => {
   const { setVideo, setTranscript, setProcessing } = useHighlightStore();
-  const [dragActive, setDragActive] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  const handleDrag = (e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (e.type === "dragenter" || e.type === "dragover") {
-      setDragActive(true);
-    } else if (e.type === "dragleave") {
-      setDragActive(false);
-    }
-  };
-
-  const handleDrop = async (e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragActive(false);
-
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      await handleFile(e.dataTransfer.files[0]);
-    }
-  };
 
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
-    if (e.target.files && e.target.files[0]) {
+    if (e?.target?.files?.[0]) {
       await handleFile(e.target.files[0]);
     }
   };
@@ -54,20 +31,8 @@ export const VideoUpload: React.FC = () => {
     }
   };
 
-  const onButtonClick = () => {
-    inputRef.current?.click();
-  };
-
   return (
-    <div
-      className={`flex flex-col items-center justify-center p-6 border-2 border-dashed rounded-lg transition-colors ${
-        dragActive ? "border-blue-500 bg-blue-50" : "border-gray-300"
-      }`}
-      onDragEnter={handleDrag}
-      onDragLeave={handleDrag}
-      onDragOver={handleDrag}
-      onDrop={handleDrop}
-    >
+    <div className="flex flex-col items-center justify-center p-6 border-2 border-dashed rounded-lg transition-colors">
       <svg
         className="w-12 h-12 text-gray-400 mb-3"
         fill="none"
@@ -83,22 +48,22 @@ export const VideoUpload: React.FC = () => {
         />
       </svg>
       <p className="mb-2 text-sm text-gray-700">
-        <span className="font-semibold">Click to upload</span> or drag and drop
+        <span className="font-semibold">Click to upload</span>
       </p>
       <p className="text-xs text-gray-500">VIDEO files only</p>
+      <label
+        htmlFor="video"
+        className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors cursor-pointer"
+      >
+        Select Video
+      </label>
       <input
-        ref={inputRef}
+        id="video"
         type="file"
         className="hidden"
         accept="video/*"
         onChange={handleChange}
       />
-      <button
-        onClick={onButtonClick}
-        className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
-      >
-        Select Video
-      </button>
     </div>
   );
 };
