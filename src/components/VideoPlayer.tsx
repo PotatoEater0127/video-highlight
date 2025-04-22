@@ -113,7 +113,7 @@ export const VideoPlayer: React.FC = () => {
 
         {/* Current time indicator */}
         <div
-          className="absolute h-full w-0.5 bg-red-500 z-10"
+          className="absolute translate h-full w-0.5 bg-red-500 z-10"
           style={{ left: `${(currentTime / duration) * 100}%` }}
         />
       </div>
@@ -135,8 +135,8 @@ export const VideoPlayer: React.FC = () => {
 
         {/* Overlay for the current sentence */}
         {currentSentence && currentSentence.selected && (
-          <div className="absolute bottom-10 left-0 right-0 text-center px-4">
-            <div className="inline-block bg-black bg-opacity-60 text-white p-3 rounded text-lg">
+          <div className="absolute bottom-4 left-0 right-0 text-center px-4">
+            <div className="inline-block bg-black/40 text-white p-3 rounded text-lg">
               {currentSentence.text}
             </div>
           </div>

@@ -60,7 +60,7 @@ export const TranscriptEditor: React.FC = () => {
       >
         <button
           onClick={() => jumpToTime(sentence.startTime)}
-          className="text-xs text-gray-500 mr-2 mt-1 hover:text-blue-500 transition-colors"
+          className="text-gray-500 mr-2 hover:text-blue-500 transition-colors cursor-pointer"
         >
           {formatTime(sentence.startTime)}
         </button>
@@ -70,7 +70,7 @@ export const TranscriptEditor: React.FC = () => {
               type="checkbox"
               checked={sentence.selected}
               onChange={() => toggleSentence(sectionId, sentence.id)}
-              className="mr-2 h-4 w-4 text-blue-600 rounded"
+              className="hidden"
             />
             <span
               className={`${

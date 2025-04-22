@@ -21,3 +21,8 @@ export interface VideoMetadata {
   src: string;
   name: string;
 }
+
+export type Timestamp = {
+  start: number;
+  end: number;
+};
