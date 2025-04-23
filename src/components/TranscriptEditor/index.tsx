@@ -55,8 +55,10 @@ export const TranscriptEditor: React.FC = () => {
   const renderSection = (section: Section) => {
     return (
       <div key={section.id} className="mb-6">
-        <h3 className="text-lg font-semibold mb-2">{section.title}</h3>
-        <div className="pl-2 border-l-2 border-gray-200">
+        <h3 className="sticky top-0 sm-static bg-white sm:bg-transparent text-lg font-semibold mb-2">
+          {section.title}
+        </h3>
+        <div className="p-0 sm:pl-2 border-l-0 sm:border-l-2 border-gray-200">
           {section.clips.map((clip) => renderSentence(clip))}
         </div>
       </div>
@@ -68,8 +70,8 @@ export const TranscriptEditor: React.FC = () => {
   }
 
   return (
-    <div className="h-full overflow-y-auto p-4">
-      <h2 className="text-2xl font-bold mb-4">Transcript</h2>
+    <div className="h-full p-2 sm:p-4">
+      <h2 className="hidden sm:block text-2xl font-bold">Transcript</h2>
       {transcript.sections.map(renderSection)}
     </div>
   );

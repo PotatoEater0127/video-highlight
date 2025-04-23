@@ -56,23 +56,21 @@ export const VideoPlayer: React.FC = () => {
         )}
       </div>
 
-      <div className="bg-gray-900 p-4">
-        <div className="flex justify-between text-white mb-2">
+      <div className="bg-gray-900 p-2 sm:p-4">
+        <div className="flex items-center justify-between text-white mb-2">
+          <ControlBar
+            isPlaying={isPlaying}
+            handleBackward={handleBackward}
+            handleForward={handleForward}
+            handlePlayPause={togglePlayPause}
+          />
           <div>{formatTime(currentTime)}</div>
-          <div>{formatTime(video.duration)}</div>
         </div>
 
         <Timeline
           duration={video.duration}
           currentTime={currentTime}
           highlightClips={highlightClips}
-        />
-
-        <ControlBar
-          isPlaying={isPlaying}
-          handleBackward={handleBackward}
-          handleForward={handleForward}
-          handlePlayPause={togglePlayPause}
         />
       </div>
     </div>

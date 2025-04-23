@@ -14,7 +14,7 @@ export const ControlBar: React.FC<ControlBarProps> = ({
   isPlaying,
 }) => {
   return (
-    <div className="flex justify-center mt-4 space-x-4">
+    <div className="flex justify-between min-w-[200px] max-w-[60%] space-x-4">
       <button
         className="p-2 rounded-full bg-gray-700 hover:bg-gray-600"
         onClick={handleBackward}

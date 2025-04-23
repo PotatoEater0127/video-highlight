@@ -23,7 +23,7 @@ function App() {
   };
 
   return (
-    <main className="flex items-center justify-center h-screen p-1">
+    <main className="flex items-center justify-center h-svh overflow-hidden">
       {renderPage()}
     </main>
   );
