@@ -9,6 +9,7 @@ import {
 } from "../../store/selectors";
 import { formatTime } from "../../utils/formatTime";
 import { ControlBar } from "./components/ControlBar";
+import { Timeline } from "./components/Timeline";
 
 export const VideoPlayer: React.FC = () => {
   const { video } = useRootStore();
@@ -38,37 +39,6 @@ export const VideoPlayer: React.FC = () => {
     );
   }
 
-  // Render the timeline with highlight markers
-  const renderTimeline = () => {
-    const duration = video.duration;
-
-    return (
-      <div className="relative h-8 bg-gray-800 rounded overflow-hidden mt-2">
-        {highlightClips.map((clip) => {
-          const startPosition = (clip.startTime / duration) * 100;
-          const width = ((clip.endTime - clip.startTime) / duration) * 100;
-
-          return (
-            <div
-              key={clip.id}
-              className="absolute h-full bg-blue-500"
-              style={{
-                left: `${startPosition}%`,
-                width: `${width}%`,
-              }}
-            />
-          );
-        })}
-
-        {/* Current time indicator */}
-        <div
-          className="absolute translate h-full w-0.5 bg-red-500 z-10"
-          style={{ left: `${(currentTime / duration) * 100}%` }}
-        />
-      </div>
-    );
-  };
-
   return (
     <div className="h-full flex flex-col bg-gray-800 text-white p-4">
       <h2 className="text-2xl font-bold mb-4">Preview</h2>
@@ -96,7 +66,11 @@ export const VideoPlayer: React.FC = () => {
           <div>{formatTime(video.duration)}</div>
         </div>
 
-        {renderTimeline()}
+        <Timeline
+          duration={video.duration}
+          currentTime={currentTime}
+          highlightClips={highlightClips}
+        />
 
         <ControlBar
           isPlaying={isPlaying}

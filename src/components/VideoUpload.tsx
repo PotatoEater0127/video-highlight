@@ -2,7 +2,8 @@ import { processVideo } from "../services/mockApi";
 import { useRootActions } from "../store/root";
 
 export const VideoUpload: React.FC = () => {
-  const { setVideo, setTranscript, setProcessing } = useRootActions();
+  const { setVideo, setTranscript, setProcessing, setCurrentTime } =
+    useRootActions();
 
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -21,8 +22,15 @@ export const VideoUpload: React.FC = () => {
     setProcessing(true);
     try {
       const { transcript, videoMetadata } = await processVideo(file);
+
+      const highlightClips = transcript.sections.flatMap((section) =>
+        section.clips.filter((clip) => clip.selected)
+      );
+      const firstHighlightClip = highlightClips[0];
+
       setVideo(videoMetadata);
       setTranscript(transcript);
+      setCurrentTime(firstHighlightClip.startTime);
     } catch (error) {
       console.error("Error processing video:", error);
       alert("Error processing video. Please try again.");
