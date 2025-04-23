@@ -1,4 +1,6 @@
-// Format time for display
+/**
+ * Format seconds to minutes:seconds
+ */
 export const formatTime = (seconds: number): string => {
   const mins = Math.floor(seconds / 60);
   const secs = Math.floor(seconds % 60);
