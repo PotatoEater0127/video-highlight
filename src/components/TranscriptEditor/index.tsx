@@ -1,48 +1,29 @@
-import { useEffect, useRef } from "react";
 import { useShallow } from "zustand/shallow";
 import { useRootActions, useRootStore } from "../../store/root";
+import { currentHighlightClipSelector } from "../../store/selectors";
 import { Clip, Section } from "../../types";
 import { Sentence } from "./components/Sentence";
 import { TimeStamp } from "./components/TimeStamp";
+import { useScrollToClip } from "./hooks/useScrollToClip";
 
 export const TranscriptEditor: React.FC = () => {
   const [transcript, currentTime] = useRootStore(
     useShallow((state) => [state.transcript, state.currentTime])
   );
+  const currentClip = useRootStore(useShallow(currentHighlightClipSelector));
   const { setCurrentTime, toggleClip } = useRootActions();
-  const editorRef = useRef<HTMLDivElement>(null);
 
-  // Auto-scroll to the current clip based on video playback time
-  useEffect(() => {
-    if (!transcript || !editorRef.current) return;
-
-    // Find the current clip being played
-    const allClips = transcript.sections.flatMap((section) => section.clips);
-    const currentClip = allClips.find(
-      (clip) => currentTime >= clip.startTime && currentTime <= clip.endTime
-    );
-
-    if (currentClip) {
-      const sentenceEl = document.getElementById(currentClip.id);
-      if (sentenceEl) {
-        sentenceEl.scrollIntoView({ behavior: "smooth", block: "center" });
-      }
-    }
-  }, [currentTime, transcript]);
+  useScrollToClip(currentClip?.id);
 
   const renderSentence = (clip: Clip) => {
     const isSentenceActive =
       currentTime >= clip.startTime && currentTime <= clip.endTime;
 
     const handleSentenceClick = () => {
-      const isPlayingThisClip =
-        currentTime >= clip.startTime && currentTime <= clip.endTime;
-
-      // If the clip is playing,  don't toggle it
-      if (isPlayingThisClip) {
+      // If the clip is currently playing, don't toggle it
+      if (clip.id === currentClip?.id) {
         return;
       }
-
       toggleClip(clip.id);
     };
 
@@ -90,7 +71,7 @@ export const TranscriptEditor: React.FC = () => {
   }
 
   return (
-    <div ref={editorRef} className="h-full overflow-y-auto p-4">
+    <div className="h-full overflow-y-auto p-4">
       <h2 className="text-2xl font-bold mb-4">Transcript</h2>
       {transcript.sections.map(renderSection)}
     </div>
