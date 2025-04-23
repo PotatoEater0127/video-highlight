@@ -2,6 +2,7 @@ import { useShallow } from "zustand/shallow";
 import { useRootActions, useRootStore } from "../../store/root";
 import { currentHighlightClipSelector } from "../../store/selectors";
 import { Clip, Section } from "../../types";
+import { Fallback } from "../Fallback";
 import { Sentence } from "./components/Sentence";
 import { TimeStamp } from "./components/TimeStamp";
 import { useScrollToClip } from "./hooks/useScrollToClip";
@@ -63,11 +64,7 @@ export const TranscriptEditor: React.FC = () => {
   };
 
   if (!transcript) {
-    return (
-      <div className="h-full flex items-center justify-center text-gray-500">
-        Upload a video to view transcript
-      </div>
-    );
+    return <Fallback />;
   }
 
   return (

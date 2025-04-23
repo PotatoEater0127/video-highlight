@@ -8,6 +8,7 @@ import {
   highlightClipsSelector,
 } from "../../store/selectors";
 import { formatTime } from "../../utils/formatTime";
+import { Fallback } from "../Fallback";
 import { ControlBar } from "./components/ControlBar";
 import { Timeline } from "./components/Timeline";
 
@@ -29,14 +30,7 @@ export const VideoPlayer: React.FC = () => {
   } = useVideo(videoRef);
 
   if (!video) {
-    return (
-      <div className="h-full flex items-center justify-center text-gray-500 bg-black">
-        <div className="text-center">
-          <p className="text-white text-xl mb-2">Video Preview</p>
-          <p className="text-gray-400">Simply press this button to start.</p>
-        </div>
-      </div>
-    );
+    return <Fallback />;
   }
 
   return (
