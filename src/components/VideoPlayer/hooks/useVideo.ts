@@ -1,4 +1,4 @@
-import { useVideoControls } from "./useVideoControls";
+import { useVideoState } from "./useVideoState";
 import { useVideoSync } from "./useVideoSync";
 
 export const useVideo = (
@@ -11,9 +11,9 @@ export const useVideo = (
     togglePlayPause,
     handleBackward,
     handleForward,
-  } = useVideoControls(videoRef);
+  } = useVideoState();
 
-  useVideoSync(videoRef, currentTime);
+  useVideoSync({ videoRef, currentTime, isPlaying });
 
   return {
     currentTime,

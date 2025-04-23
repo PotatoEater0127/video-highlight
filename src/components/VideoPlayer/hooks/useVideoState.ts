@@ -6,10 +6,10 @@ import {
   highlightClipsSelector,
 } from "../../../store/selectors";
 
-// Hook that provides utils to control the video player
-export const useVideoControls = (
-  videoRef: React.RefObject<HTMLVideoElement | null>
-) => {
+/**
+ *  Controls the the state for the video player
+ */
+export const useVideoState = () => {
   const currentTime = useRootStore((state) => state.currentTime);
   const highlightClips = useRootStore(useShallow(highlightClipsSelector));
   const currentHighlightClip = useRootStore(
@@ -21,16 +21,12 @@ export const useVideoControls = (
   const [isPlaying, setIsPlaying] = useState(false);
 
   const togglePlayPause = useCallback(() => {
-    if (videoRef.current && isPlaying) {
-      videoRef.current.pause();
-      setIsPlaying(false);
-    } else {
-      videoRef.current?.play();
-      setIsPlaying(true);
-    }
-  }, [isPlaying, videoRef]);
+    setIsPlaying((isPlaying) => !isPlaying);
+  }, []);
 
-  // Jum to next highlight clip, if there's no next highlight clip, do nothing.
+  // Jump to next highlight clip,
+  // if there's no next highlight clip, jump to the end of the current highlight clip.
+  // if there's no current highlight clip, jump to the end of the video.
   const handleForward = useCallback(() => {
     const nextClip = highlightClips.find(
       (clip) => currentTime < clip.startTime
@@ -38,11 +34,18 @@ export const useVideoControls = (
 
     if (nextClip) {
       setCurrentTime(nextClip.startTime);
+    } else {
+      setCurrentTime(currentHighlightClip?.endTime || 0);
     }
-  }, [currentTime, highlightClips, setCurrentTime]);
+  }, [
+    currentHighlightClip?.endTime,
+    currentTime,
+    highlightClips,
+    setCurrentTime,
+  ]);
 
   // Jump to previous highlight clip,
-  // if there's no previous highlight clip, jump to the start of the current highlight clip,
+  // if there's no previous highlight clip, jump to the start of the current highlight clip
   // if there's no current highlight clip, jump to the start of the video.
   const handleBackward = useCallback(() => {
     const pastClips = highlightClips.filter(
@@ -62,18 +65,26 @@ export const useVideoControls = (
   ]);
 
   // Handle onTimeUpdate event for video player
-  const handleTimeUpdate = useCallback(() => {
-    if (!videoRef.current) {
-      return;
-    }
+  const handleTimeUpdate = useCallback(
+    (e: React.SyntheticEvent<HTMLVideoElement, Event>) => {
+      // End the video if it is playing the last highlight clip
+      // const nextClip = highlightClips.find(
+      //   (clip) => currentTime < clip.startTime
+      // );
+      // if (!nextClip && currentTime > (currentHighlightClip?.endTime || 0)) {
+      //   e.currentTarget.pause();
+      //   setIsPlaying(false);
+      // }
 
-    // If the current clip is over, jump to the next highlight clip
-    if (!currentHighlightClip) {
-      handleForward();
-    } else {
-      setCurrentTime(videoRef.current.currentTime);
-    }
-  }, [currentHighlightClip, handleForward, setCurrentTime, videoRef]);
+      // If the current clip is over, jump to the next highlight clip
+      if (!currentHighlightClip) {
+        handleForward();
+      } else {
+        setCurrentTime(e.currentTarget.currentTime);
+      }
+    },
+    [currentHighlightClip, handleForward, setCurrentTime]
+  );
 
   return {
     currentTime,

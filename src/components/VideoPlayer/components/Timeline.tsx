@@ -12,23 +12,23 @@ export const Timeline: React.FC<TimelineProps> = ({
   duration,
   highlightClips,
 }) => {
+  const renderHighlightClip = (clip: Clip) => {
+    const startPosition = (clip.startTime / duration) * 100;
+    const width = ((clip.endTime - clip.startTime) / duration) * 100;
+
+    return (
+      <div
+        key={clip.id}
+        className="absolute h-full bg-blue-500"
+        style={{ left: `${startPosition}%`, width: `${width}%` }}
+      />
+    );
+  };
+
   return (
     <div className="relative h-8 bg-gray-800 rounded overflow-hidden mt-2">
-      {highlightClips.map((clip) => {
-        const startPosition = (clip.startTime / duration) * 100;
-        const width = ((clip.endTime - clip.startTime) / duration) * 100;
-
-        return (
-          <div
-            key={clip.id}
-            className="absolute h-full bg-blue-500"
-            style={{
-              left: `${startPosition}%`,
-              width: `${width}%`,
-            }}
-          />
-        );
-      })}
+      {/* Highlight clips */}
+      {highlightClips.map(renderHighlightClip)}
 
       {/* Current time indicator */}
       <div

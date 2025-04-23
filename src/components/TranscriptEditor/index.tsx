@@ -1,8 +1,9 @@
 import { useEffect, useRef } from "react";
 import { useShallow } from "zustand/shallow";
-import { useRootActions, useRootStore } from "../store/root";
-import { Clip, Section } from "../types";
-import { formatTime } from "../utils/formatTime";
+import { useRootActions, useRootStore } from "../../store/root";
+import { Clip, Section } from "../../types";
+import { Sentence } from "./components/Sentence";
+import { TimeStamp } from "./components/TimeStamp";
 
 export const TranscriptEditor: React.FC = () => {
   const [transcript, currentTime] = useRootStore(
@@ -22,55 +23,50 @@ export const TranscriptEditor: React.FC = () => {
     );
 
     if (currentClip) {
-      const sentenceEl = document.getElementById(`sentence-${currentClip.id}`);
+      const sentenceEl = document.getElementById(currentClip.id);
       if (sentenceEl) {
         sentenceEl.scrollIntoView({ behavior: "smooth", block: "center" });
       }
     }
   }, [currentTime, transcript]);
 
-  if (!transcript) {
-    return (
-      <div className="h-full flex items-center justify-center text-gray-500">
-        Upload a video to view transcript
-      </div>
-    );
-  }
-
-  const renderSentence = (clip: Clip, sectionId: string) => {
-    const isActive =
+  const renderSentence = (clip: Clip) => {
+    const isSentenceActive =
       currentTime >= clip.startTime && currentTime <= clip.endTime;
 
+    const handleSentenceClick = () => {
+      const isPlayingThisClip =
+        currentTime >= clip.startTime && currentTime <= clip.endTime;
+
+      // If the clip is playing,  don't toggle it
+      if (isPlayingThisClip) {
+        return;
+      }
+
+      toggleClip(clip.id);
+    };
+
+    const timeStamp = (
+      <TimeStamp
+        clipTime={clip.startTime}
+        onClick={() => {
+          setCurrentTime(clip.startTime);
+          // also select the clip if it's not already selected
+          if (!clip.selected) {
+            toggleClip(clip.id);
+          }
+        }}
+      />
+    );
+
     return (
-      <div
+      <Sentence
         key={clip.id}
-        id={`sentence-${clip.id}`}
-        className={`p-2 my-1 rounded transition-colors flex items-start ${
-          isActive ? "bg-yellow-100" : clip.selected ? "bg-blue-50" : ""
-        }`}
-      >
-        <button
-          onClick={() => setCurrentTime(clip.startTime)}
-          className="text-gray-500 mr-2 hover:text-blue-500 transition-colors cursor-pointer"
-        >
-          {formatTime(clip.startTime)}
-        </button>
-        <div className="flex-grow">
-          <label className="flex items-center cursor-pointer">
-            <input
-              type="checkbox"
-              checked={clip.selected}
-              onChange={() => toggleClip(sectionId, clip.id)}
-              className="hidden"
-            />
-            <span
-              className={`${clip.selected ? "text-black" : "text-gray-700"}`}
-            >
-              {clip.text}
-            </span>
-          </label>
-        </div>
-      </div>
+        isActive={isSentenceActive}
+        clip={clip}
+        onClick={handleSentenceClick}
+        timeStamp={timeStamp}
+      />
     );
   };
 
@@ -79,11 +75,19 @@ export const TranscriptEditor: React.FC = () => {
       <div key={section.id} className="mb-6">
         <h3 className="text-lg font-semibold mb-2">{section.title}</h3>
         <div className="pl-2 border-l-2 border-gray-200">
-          {section.clips.map((clip) => renderSentence(clip, section.id))}
+          {section.clips.map((clip) => renderSentence(clip))}
         </div>
       </div>
     );
   };
+
+  if (!transcript) {
+    return (
+      <div className="h-full flex items-center justify-center text-gray-500">
+        Upload a video to view transcript
+      </div>
+    );
+  }
 
   return (
     <div ref={editorRef} className="h-full overflow-y-auto p-4">

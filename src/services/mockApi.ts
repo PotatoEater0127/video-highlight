@@ -24,15 +24,25 @@ const getVideoDuration = (videoUrl: string): Promise<number> => {
   });
 };
 
-function generateRandomTimestamps(
-  duration: number,
-  timestampCount: number,
-  minLength: number,
-  maxLength: number
-): Timestamp[] {
+type GenerateRandomTimestampsProps = {
+  timestampCount: number;
+  duration: number;
+  minLength: number;
+  maxLength: number;
+};
+/**
+ * Generate `timestampCount` amount of random timestamps for a video.
+ * The length of a timestamp is between `minLength` and `maxLength`
+ */
+function generateRandomTimestamps({
+  timestampCount,
+  duration,
+  minLength,
+  maxLength,
+}: GenerateRandomTimestampsProps): Timestamp[] {
   if (
-    duration <= 0 ||
     timestampCount <= 0 ||
+    duration <= 0 ||
     minLength <= 0 ||
     maxLength < minLength
   ) {
@@ -70,6 +80,7 @@ function generateRandomTimestamps(
   return timestamps.sort((a, b) => a.start - b.start);
 }
 
+const PROCESSING_DELAY = 1000;
 /**
  * Mock API to simulate AI processing of a video
  * In a real application, this would be an actual API call
@@ -78,7 +89,7 @@ export const processVideo = async (
   file: File
 ): Promise<{ transcript: Transcript; videoMetadata: VideoMetadata }> => {
   // Simulate processing delay
-  await delay(2000);
+  await delay(PROCESSING_DELAY);
 
   // Create a URL for the video
   const videoUrl = URL.createObjectURL(file);
@@ -94,14 +105,14 @@ export const processVideo = async (
   };
 
   // Generate timestamps for our sentences
-  const timestamps = generateRandomTimestamps(
+  const timestamps = generateRandomTimestamps({
     duration,
-    SENTENCES.length,
-    1,
-    Math.floor(duration / SENTENCES.length)
-  );
+    timestampCount: SENTENCES.length,
+    minLength: 1,
+    maxLength: Math.floor(duration / SENTENCES.length),
+  });
 
-  // Generate mock transcript with exactly 15 sentences
+  // Generate mock transcript with exactly 15 sentences,
   // so that the page can be high enough to test the auto scrolling feature
   const transcript: Transcript = {
     sections: [
