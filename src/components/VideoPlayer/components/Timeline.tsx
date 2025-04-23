@@ -32,9 +32,11 @@ export const Timeline: React.FC<TimelineProps> = ({
 
       {/* Current time indicator */}
       <div
-        className="absolute -translate-x-full h-full w-0.5 bg-red-500"
-        style={{ left: `${(currentTime / duration) * 100}%` }}
-      />
+        className={`absolute left-0 right-0 top-0 bottom-0 will-change-transform`}
+        style={{ transform: `translateX(${(currentTime / duration) * 100}%)` }}
+      >
+        <div className={`absolute left-0 h-full w-0.5 bg-red-500`} />
+      </div>
     </div>
   );
 };

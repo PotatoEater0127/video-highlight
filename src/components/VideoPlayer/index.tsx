@@ -34,12 +34,12 @@ export const VideoPlayer: React.FC = () => {
   }
 
   return (
-    <div className="h-full flex flex-col bg-gray-800 text-white p-2 sm:p-4">
+    <div className="h-full flex flex-col bg-gray-800 text-white p-0 sm:p-4">
       <h2 className="hidden sm:block text-2xl font-bold mb-4">Preview</h2>
       <div className="relative bg-black overflow-hidden">
         <video
           playsInline
-          controls={false}
+          autoPlay
           ref={videoRef}
           src={video.src}
           className="w-full h-full object-contain"

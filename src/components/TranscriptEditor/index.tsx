@@ -18,7 +18,7 @@ export const TranscriptEditor: React.FC = () => {
 
   const renderSentence = (clip: Clip) => {
     const isSentenceActive =
-      currentTime >= clip.startTime && currentTime <= clip.endTime;
+      currentTime >= clip.startTime && currentTime < clip.endTime;
 
     const handleSentenceClick = () => {
       // If the clip is currently playing, don't toggle it
@@ -31,7 +31,9 @@ export const TranscriptEditor: React.FC = () => {
     const timeStamp = (
       <TimeStamp
         clipTime={clip.startTime}
-        onClick={() => {
+        onClick={(e) => {
+          e.stopPropagation();
+
           setCurrentTime(clip.startTime);
           // also select the clip if it's not already selected
           if (!clip.selected) {
@@ -55,7 +57,7 @@ export const TranscriptEditor: React.FC = () => {
   const renderSection = (section: Section) => {
     return (
       <div key={section.id} className="mb-6">
-        <h3 className="sticky top-0 sm-static bg-white sm:bg-transparent text-lg font-semibold mb-2">
+        <h3 className="sticky top-0 sm:static bg-white sm:bg-transparent text-lg font-semibold mb-2">
           {section.title}
         </h3>
         <div className="p-0 sm:pl-2 border-l-0 sm:border-l-2 border-gray-200">

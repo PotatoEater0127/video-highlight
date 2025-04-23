@@ -7,7 +7,7 @@ const Main: React.FC = () => {
       <div className="flex-1 order-2 sm:order-1 overflow-y-auto">
         <TranscriptEditor />
       </div>
-      <div className="flex-1 order-1 sm:order-2">
+      <div className="flex-0 sm:flex-1 order-1 sm:order-2">
         <VideoPlayer />
       </div>
     </div>

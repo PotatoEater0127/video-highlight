@@ -2,7 +2,7 @@ import { formatTime } from "../../../utils/formatTime";
 
 type TimeStampProps = {
   clipTime: number;
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
 export const TimeStamp: React.FC<TimeStampProps> = ({ clipTime, onClick }) => {

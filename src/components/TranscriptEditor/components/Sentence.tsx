@@ -5,40 +5,35 @@ import { TimeStamp } from "./TimeStamp";
 
 type SentenceProps = {
   clip: Clip;
-  isActive: boolean;
   onClick: () => void;
   timeStamp: ReactNode;
+  isActive: boolean;
 };
 
 export const Sentence: React.FC<SentenceProps> = ({
   clip,
-  isActive,
   onClick,
   timeStamp = <TimeStamp clipTime={clip.startTime} />,
+  isActive,
 }) => {
   const wrapperClassName = clsx(
-    "p-2 my-1 rounded transition-colors flex items-start",
-    isActive && "bg-yellow-100",
-    !isActive && clip.selected && "bg-blue-50"
+    "flex items-start border-2 rounded transition-colors p-2 my-1 cursor-pointer",
+    clip.selected && "bg-blue-100",
+    isActive ? "border-yellow-300" : "border-transparent"
   );
 
   return (
-    <div key={clip.id} id={clip.id} className={wrapperClassName}>
+    <div
+      key={clip.id}
+      id={clip.id}
+      onClick={onClick}
+      className={wrapperClassName}
+    >
       {timeStamp}
-      <div className="flex-grow">
-        <label className="flex items-center cursor-pointer">
-          <input
-            type="checkbox"
-            checked={clip.selected}
-            onChange={onClick}
-            className="hidden"
-          />
-          <span
-            className={clsx(clip.selected ? "text-black" : "text-gray-700")}
-          >
-            {clip.text}
-          </span>
-        </label>
+      <div className={clsx("flex items-center")}>
+        <span className={clsx(clip.selected ? "text-black" : "text-gray-700")}>
+          {clip.text}
+        </span>
       </div>
     </div>
   );
