@@ -36,6 +36,7 @@ The Video Highlight Tool is a web application built using React, TypeScript, and
 - **Build Tool**: Vite
 - **Utilities**: UUID for ID generation
 - **APIs**: Utils functions to mock API behavior for demo purposes
+- **Deployment**: Vercel
 
 ## 💻 Prerequisites
 
