@@ -31,9 +31,13 @@ export const VideoUpload: React.FC = () => {
       setVideo(videoMetadata);
       setTranscript(transcript);
       setCurrentTime(firstHighlightClip.startTime);
-    } catch (error) {
+    } catch (error: unknown) {
       console.error("Error processing video:", error);
-      alert("Error processing video. Please try again.");
+      if (error instanceof Error) {
+        alert(`Error processing video. ${error.message}`);
+      } else {
+        alert("Error processing video. An unknown error occurred.");
+      }
     } finally {
       setProcessing(false);
     }

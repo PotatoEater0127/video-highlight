@@ -4,6 +4,8 @@ import { SENTENCES } from "./data";
 
 import { v4 as uuid } from "uuid";
 
+const DURATION_MIN_LENGTH = 15;
+
 // Simulate API delay
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -16,8 +18,7 @@ const getVideoDuration = (videoUrl: string): Promise<number> => {
     video.preload = "metadata";
 
     video.onloadedmetadata = () => {
-      // Round to nearest second for simplicity
-      resolve(Math.round(video.duration));
+      resolve(video.duration);
     };
 
     video.src = videoUrl;
@@ -96,6 +97,11 @@ export const processVideo = async (
 
   // Get actual video duration
   const duration = await getVideoDuration(videoUrl);
+  if (duration < DURATION_MIN_LENGTH) {
+    throw new Error(
+      "Video must be at least 15 seconds long. Please upload another video."
+    );
+  }
 
   // Create mock video metadata
   const videoMetadata: VideoMetadata = {
