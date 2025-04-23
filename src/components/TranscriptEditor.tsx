@@ -1,11 +1,14 @@
 import { useEffect, useRef } from "react";
-import { useHighlightStore } from "../store";
+import { useShallow } from "zustand/shallow";
+import { useRootActions, useRootStore } from "../store/root";
 import { Clip, Section } from "../types";
 import { formatTime } from "../utils/formatTime";
 
 export const TranscriptEditor: React.FC = () => {
-  const { transcript, currentTime, jumpToTime, toggleClip } =
-    useHighlightStore();
+  const [transcript, currentTime] = useRootStore(
+    useShallow((state) => [state.transcript, state.currentTime])
+  );
+  const { setCurrentTime, toggleClip } = useRootActions();
   const editorRef = useRef<HTMLDivElement>(null);
 
   // Auto-scroll to the current clip based on video playback time
@@ -47,7 +50,7 @@ export const TranscriptEditor: React.FC = () => {
         }`}
       >
         <button
-          onClick={() => jumpToTime(clip.startTime)}
+          onClick={() => setCurrentTime(clip.startTime)}
           className="text-gray-500 mr-2 hover:text-blue-500 transition-colors cursor-pointer"
         >
           {formatTime(clip.startTime)}

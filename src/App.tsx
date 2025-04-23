@@ -1,12 +1,11 @@
 import { useShallow } from "zustand/shallow";
-import "./App.css";
 import LoadingPage from "./pages/Loading";
 import MainPage from "./pages/Main";
 import UploadPage from "./pages/Upload";
-import { useHighlightStore } from "./store";
+import { useRootStore } from "./store/root";
 
 function App() {
-  const { video, isProcessing } = useHighlightStore(
+  const { video, isProcessing } = useRootStore(
     useShallow((state) => ({
       video: state.video,
       isProcessing: state.isProcessing,

@@ -1,8 +1,8 @@
 import { processVideo } from "../services/mockApi";
-import { useHighlightStore } from "../store";
+import { useRootActions } from "../store/root";
 
 export const VideoUpload: React.FC = () => {
-  const { setVideo, setTranscript, setProcessing } = useHighlightStore();
+  const { setVideo, setTranscript, setProcessing } = useRootActions();
 
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();

@@ -1,45 +1,31 @@
-import { useEffect, useRef, useState } from "react";
-import { useHighlightStore } from "../../store";
-import { Clip } from "../../types";
+import { useRef } from "react";
+import { useRootStore } from "../../store/root";
 import { useVideo } from "./hooks/useVideo";
 
+import { useShallow } from "zustand/shallow";
+import {
+  currentHighlightClipSelector,
+  highlightClipsSelector,
+} from "../../store/selectors";
 import { formatTime } from "../../utils/formatTime";
+import { ControlBar } from "./components/ControlBar";
 
 export const VideoPlayer: React.FC = () => {
-  const { video, transcript } = useHighlightStore();
-  const [currentClip, setCurrentClip] = useState<Clip | null>(null);
+  const { video } = useRootStore();
+  const currentTime = useRootStore((state) => state.currentTime);
+  const highlightClips = useRootStore(useShallow(highlightClipsSelector));
+  const currentHighlightClip = useRootStore(
+    useShallow(currentHighlightClipSelector)
+  );
+
   const videoRef = useRef<HTMLVideoElement>(null);
   const {
     isPlaying,
-    currentTime,
     handleTimeUpdate,
-    handlePlay,
-    handlePause,
     togglePlayPause,
+    handleBackward,
+    handleForward,
   } = useVideo(videoRef);
-
-  // Generate highlight clips
-  const highlightClips =
-    transcript?.sections
-      .flatMap((section) => section.clips)
-      .filter((clip) => clip.selected)
-      .sort((a, b) => a.startTime - b.startTime) || [];
-
-  // Update current clip based on playback time
-  useEffect(() => {
-    if (!transcript) return;
-
-    const allClips = transcript.sections.flatMap((section) => section.clips);
-    const clip = allClips.find(
-      (s) => currentTime >= s.startTime && currentTime <= s.endTime
-    );
-
-    if (clip) {
-      setCurrentClip(clip);
-    } else {
-      setCurrentClip(null);
-    }
-  }, [currentTime, transcript]);
 
   if (!video) {
     return (
@@ -92,15 +78,13 @@ export const VideoPlayer: React.FC = () => {
           src={video.src}
           className="w-full h-full object-contain"
           onTimeUpdate={handleTimeUpdate}
-          onPlay={handlePlay}
-          onPause={handlePause}
         />
 
-        {/* Overlay for the current clip */}
-        {currentClip && currentClip.selected && (
+        {/* Transcript for the current clip */}
+        {currentHighlightClip && (
           <div className="absolute bottom-4 left-0 right-0 text-center px-4">
             <div className="inline-block bg-black/40 text-white p-3 rounded text-lg">
-              {currentClip.text}
+              {currentHighlightClip.text}
             </div>
           </div>
         )}
@@ -114,97 +98,12 @@ export const VideoPlayer: React.FC = () => {
 
         {renderTimeline()}
 
-        <div className="flex justify-center mt-4 space-x-4">
-          <button
-            className="p-2 rounded-full bg-gray-700 hover:bg-gray-600"
-            onClick={() => {
-              if (videoRef.current) {
-                videoRef.current.currentTime = Math.max(0, currentTime - 10);
-              }
-            }}
-          >
-            <svg
-              className="w-6 h-6 text-white"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M11 19l-7-7 7-7m8 14l-7-7 7-7"
-              />
-            </svg>
-          </button>
-
-          <button
-            className="p-2 rounded-full bg-gray-700 hover:bg-gray-600"
-            onClick={togglePlayPause}
-          >
-            {isPlaying ? (
-              <svg
-                className="w-6 h-6 text-white"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-            ) : (
-              <svg
-                className="w-6 h-6 text-white"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
-                />
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-            )}
-          </button>
-
-          <button
-            className="p-2 rounded-full bg-gray-700 hover:bg-gray-600"
-            onClick={() => {
-              if (videoRef.current) {
-                videoRef.current.currentTime = Math.min(
-                  video.duration,
-                  currentTime + 10
-                );
-              }
-            }}
-          >
-            <svg
-              className="w-6 h-6 text-white"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M13 5l7 7-7 7M5 5l7 7-7 7"
-              />
-            </svg>
-          </button>
-        </div>
+        <ControlBar
+          isPlaying={isPlaying}
+          handleBackward={handleBackward}
+          handleForward={handleForward}
+          handlePlayPause={togglePlayPause}
+        />
       </div>
     </div>
   );
