@@ -1,37 +1,36 @@
 import { useEffect, useRef, useState } from "react";
-import { useHighlightStore } from "../store";
-import { Sentence } from "../types";
+import { useHighlightStore } from "../../store";
+import { Clip } from "../../types";
+import { useVideo } from "./hooks/useVideo";
+
+import { formatTime } from "../../utils/formatTime";
 
 export const VideoPlayer: React.FC = () => {
-  const { video, transcript, currentTime, setCurrentTime } =
-    useHighlightStore();
+  const { video, transcript } = useHighlightStore();
+  const [currentSentence, setCurrentSentence] = useState<Clip | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [currentSentence, setCurrentSentence] = useState<Sentence | null>(null);
+  const {
+    isPlaying,
+    currentTime,
+    handleTimeUpdate,
+    handlePlay,
+    handlePause,
+    togglePlayPause,
+  } = useVideo(videoRef);
 
   // Generate highlight clips
   const highlightClips =
     transcript?.sections
-      .flatMap((section) => section.sentences)
+      .flatMap((section) => section.clips)
       .filter((sentence) => sentence.selected)
       .sort((a, b) => a.startTime - b.startTime) || [];
-
-  // Update video position when currentTime changes from external sources
-  useEffect(() => {
-    if (
-      videoRef.current &&
-      Math.abs(videoRef.current.currentTime - currentTime) > 0.5
-    ) {
-      videoRef.current.currentTime = currentTime;
-    }
-  }, [currentTime]);
 
   // Update current sentence based on playback time
   useEffect(() => {
     if (!transcript) return;
 
     const allSentences = transcript.sections.flatMap(
-      (section) => section.sentences
+      (section) => section.clips
     );
     const sentence = allSentences.find(
       (s) => currentTime >= s.startTime && currentTime <= s.endTime
@@ -43,40 +42,6 @@ export const VideoPlayer: React.FC = () => {
       setCurrentSentence(null);
     }
   }, [currentTime, transcript]);
-
-  // Handle time update event from video player
-  const handleTimeUpdate = () => {
-    if (videoRef.current) {
-      setCurrentTime(videoRef.current.currentTime);
-    }
-  };
-
-  const handlePlay = () => {
-    setIsPlaying(true);
-  };
-
-  const handlePause = () => {
-    setIsPlaying(false);
-  };
-
-  const togglePlayPause = () => {
-    if (videoRef.current) {
-      if (isPlaying) {
-        videoRef.current.pause();
-      } else {
-        videoRef.current.play();
-      }
-    }
-  };
-
-  // Format time for display
-  const formatTime = (seconds: number): string => {
-    const mins = Math.floor(seconds / 60);
-    const secs = Math.floor(seconds % 60);
-    return `${mins.toString().padStart(2, "0")}:${secs
-      .toString()
-      .padStart(2, "0")}`;
-  };
 
   if (!video) {
     return (
