@@ -1,56 +1,72 @@
-# Video Highlight Tool
+# 🎬 Video Highlight Tool
 
-A web application for creating highlight clips from videos using AI-powered transcript generation.
+This is a web application that allows users to create highlight clips from uploaded videos and add transcripts to these clips.
 
-## Features
+## 📑 Table of Contents
 
-- Upload video files
-- AI-powered transcript generation (mocked for this demo)
-- Split-screen interface with editing area and preview
-- Select/unselect sentences for highlights
-- Video playback with timeline visualization
-- Transcript overlay on the video
+- [🎬 Video Highlight Tool](#-video-highlight-tool)
+  - [📑 Table of Contents](#-table-of-contents)
+  - [🔍 Overview](#-overview)
+  - [✨ Features](#-features)
+  - [🛠️ Technology Stack](#️-technology-stack)
+  - [💻 Prerequisites](#-prerequisites)
+  - [🚀 Installation](#-installation)
+  - [📋 Usage](#-usage)
+  - [📂 Project Structure](#-project-structure)
 
-## Technology Stack
+## 🔍 Overview
 
-- React 19
-- TypeScript
-- Tailwind CSS
-- Zustand (State management)
-- Vite (Build tool)
+The Video Highlight Tool is a web application built using React, TypeScript, and Tailwind CSS. It allows users to upload videos and use AI-powered transcription to create engaging highlight reels. The application features a split-screen interface with a transcript editor on one side and a video preview on the other.
 
-## Getting Started
+## ✨ Features
 
-### Prerequisites
+- 📤 Video upload and processing
+- 🤖 AI-powered transcript generation (mocked for this demo)
+- 🖥️ Split-screen interface with transcript editor and video preview
+- ✅ Select/unselect sentences for creating custom highlights
+- ▶️ Video playback with timeline visualization
+- 💬 Transcript overlay on the video
+- 📱 Responsive design for desktop and mobile
 
-- Node.js 18+ and npm
+## 🛠️ Technology Stack
 
-### Installation
+- **Frontend**: React 19, TypeScript
+- **State Management**: Zustand with immer
+- **Styling**: Tailwind CSS
+- **Build Tool**: Vite
+- **Utilities**: UUID for ID generation
+- **APIs**: Mock API for demo purposes
 
-1. Clone the repository
-2. Install dependencies:
+## 💻 Prerequisites
 
-```bash
-npm install
-```
+Before you begin, ensure you have the following installed:
+- Node.js (v20.0.0 or higher)
+- npm (v10.0.0 or higher)
+- A modern web browser (Chrome, Safari)
 
-3. Start the development server:
+## 🚀 Installation
 
-```bash
-npm run dev
-```
+1. Clone the repository: `git clone https://github.com/your-username/video-highlight.git`
+2. Navigate to the project directory: `cd video-highlight`
+3. Install dependencies: `npm install`
+4. Start the development server: `npm run dev`
+5. Visit the application in your browser at `http://localhost:5173`
 
-## Usage
+## 📋 Usage
 
-1. Upload a video file using the drag-and-drop interface or file selector
-2. Wait for the AI to process the video and generate a transcript
-3. Use the left panel to select/unselect sentences for your highlight clip
-4. Preview your highlight clip in the right panel
-5. Click on timestamps to navigate to specific parts of the video
+1. Launch the application in your browser
+2. Upload a video file using the drag-and-drop interface or file selector
+3. Wait for the AI to process the video and generate a transcript (mock processing)
+4. Use the left panel to select/unselect sentences for your highlight clips
+5. Preview your highlight compilation in the right panel
+6. Click on timestamps or sentences to navigate to specific parts of the video
 
-## Project Structure
+## 📂 Project Structure
 
-- `src/components/` - React components
-- `src/services/` - Mock API services
-- `src/store.ts` - Zustand store for state management
+- `src/components/` - React components including TranscriptEditor and VideoPlayer
+- `src/pages/` - Application pages (Main, Upload, Loading)
+- `src/services/` - Mock API services for video processing
+- `src/store/` - Zustand store for state management
 - `src/types.ts` - TypeScript type definitions
+- `src/utils/` - Utility functions
+
