@@ -2,7 +2,6 @@ import { useRef } from "react";
 import { useRootStore } from "../../store/root";
 import { useVideo } from "./hooks/useVideo";
 
-import clsx from "clsx";
 import { useShallow } from "zustand/shallow";
 import {
   currentHighlightClipSelector,
@@ -28,8 +27,6 @@ export const VideoPlayer: React.FC = () => {
     togglePlayPause,
     handleBackward,
     handleForward,
-    isTransitioning,
-    transitionTime,
   } = useVideo(videoRef);
 
   if (!video) {
@@ -37,28 +34,22 @@ export const VideoPlayer: React.FC = () => {
   }
 
   return (
-    <div className="h-full flex flex-col bg-gray-800 text-white p-4">
-      <h2 className="text-2xl font-bold mb-4">Preview</h2>
+    <div className="h-full flex flex-col bg-gray-800 text-white p-2 sm:p-4">
+      <h2 className="hidden sm:block text-2xl font-bold mb-4">Preview</h2>
       <div className="relative bg-black overflow-hidden">
         <video
+          playsInline
+          controls={false}
           ref={videoRef}
           src={video.src}
-          className={clsx(
-            `w-full h-full object-contain transition-all duration-${transitionTime}`,
-            isTransitioning ? "opacity-20" : "opacity-100"
-          )}
+          className="w-full h-full object-contain"
           onTimeUpdate={handleTimeUpdate}
         />
 
         {/* Transcript for the playing clip */}
         {currentHighlightClip && (
-          <div className="absolute bottom-4 left-0 right-0 text-center px-4">
-            <div
-              className={clsx(
-                `inline-block bg-black/40 text-white p-3 rounded text-lg transition-all duration-${transitionTime}`,
-                isTransitioning ? "opacity-20" : "opacity-100"
-              )}
-            >
+          <div className="absolute bottom-1 sm:bottom-4 left-0 right-0 text-center px-1 sm:px-4">
+            <div className="inline-block bg-black/40 text-white text-sm/4 sm:text-base p-1 sm:p-3 rounded text-lg">
               {currentHighlightClip.text}
             </div>
           </div>

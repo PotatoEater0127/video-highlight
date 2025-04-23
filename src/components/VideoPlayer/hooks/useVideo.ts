@@ -11,8 +11,6 @@ export const useVideo = (
     togglePlayPause,
     handleBackward,
     handleForward,
-    isTransitioning,
-    transitionTime,
   } = useVideoState();
 
   useVideoSync({ videoRef, currentTime, isPlaying });
@@ -20,8 +18,6 @@ export const useVideo = (
   return {
     currentTime,
     isPlaying,
-    isTransitioning,
-    transitionTime,
     handleTimeUpdate,
     togglePlayPause,
     handleBackward,

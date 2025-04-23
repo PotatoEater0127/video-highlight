@@ -5,7 +5,6 @@ import {
   currentHighlightClipSelector,
   highlightClipsSelector,
 } from "../../../store/selectors";
-import { useTransition } from "./useTransition";
 
 /**
  *  Controls the the state for the video player
@@ -19,9 +18,6 @@ export const useVideoState = () => {
     useShallow(currentHighlightClipSelector)
   );
   const { setCurrentTime } = useRootActions();
-
-  const { isTransitioning, triggerTransition, transitionTime } =
-    useTransition();
 
   const togglePlayPause = useCallback(() => {
     setIsPlaying((isPlaying) => !isPlaying);
@@ -37,8 +33,6 @@ export const useVideoState = () => {
 
     if (nextClip) {
       setCurrentTime(nextClip.startTime);
-
-      triggerTransition();
     } else {
       setCurrentTime(currentHighlightClip?.endTime || 0);
     }
@@ -47,7 +41,6 @@ export const useVideoState = () => {
     currentTime,
     highlightClips,
     setCurrentTime,
-    triggerTransition,
   ]);
 
   // Jump to previous highlight clip,
@@ -63,14 +56,11 @@ export const useVideoState = () => {
     }
     const previousClip = pastClips[pastClips.length - 1];
     setCurrentTime(previousClip.startTime);
-
-    triggerTransition();
   }, [
     currentHighlightClip?.startTime,
     currentTime,
     highlightClips,
     setCurrentTime,
-    triggerTransition,
   ]);
 
   // Handle onTimeUpdate event for video player
@@ -99,9 +89,6 @@ export const useVideoState = () => {
   return {
     currentTime,
     isPlaying,
-    isTransitioning,
-    triggerTransition,
-    transitionTime,
     handleTimeUpdate,
     togglePlayPause,
     handleForward,
