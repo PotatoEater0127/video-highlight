@@ -1,4 +1,4 @@
-export interface Sentence {
+export interface Clip {
   id: string;
   text: string;
   startTime: number;
@@ -9,7 +9,7 @@ export interface Sentence {
 export interface Section {
   id: string;
   title: string;
-  sentences: Sentence[];
+  clips: Clip[];
 }
 
 export interface Transcript {

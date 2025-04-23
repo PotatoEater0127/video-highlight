@@ -7,7 +7,7 @@ import { formatTime } from "../../utils/formatTime";
 
 export const VideoPlayer: React.FC = () => {
   const { video, transcript } = useHighlightStore();
-  const [currentSentence, setCurrentSentence] = useState<Clip | null>(null);
+  const [currentClip, setCurrentClip] = useState<Clip | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const {
     isPlaying,
@@ -22,24 +22,22 @@ export const VideoPlayer: React.FC = () => {
   const highlightClips =
     transcript?.sections
       .flatMap((section) => section.clips)
-      .filter((sentence) => sentence.selected)
+      .filter((clip) => clip.selected)
       .sort((a, b) => a.startTime - b.startTime) || [];
 
-  // Update current sentence based on playback time
+  // Update current clip based on playback time
   useEffect(() => {
     if (!transcript) return;
 
-    const allSentences = transcript.sections.flatMap(
-      (section) => section.clips
-    );
-    const sentence = allSentences.find(
+    const allClips = transcript.sections.flatMap((section) => section.clips);
+    const clip = allClips.find(
       (s) => currentTime >= s.startTime && currentTime <= s.endTime
     );
 
-    if (sentence) {
-      setCurrentSentence(sentence);
+    if (clip) {
+      setCurrentClip(clip);
     } else {
-      setCurrentSentence(null);
+      setCurrentClip(null);
     }
   }, [currentTime, transcript]);
 
@@ -98,11 +96,11 @@ export const VideoPlayer: React.FC = () => {
           onPause={handlePause}
         />
 
-        {/* Overlay for the current sentence */}
-        {currentSentence && currentSentence.selected && (
+        {/* Overlay for the current clip */}
+        {currentClip && currentClip.selected && (
           <div className="absolute bottom-4 left-0 right-0 text-center px-4">
             <div className="inline-block bg-black/40 text-white p-3 rounded text-lg">
-              {currentSentence.text}
+              {currentClip.text}
             </div>
           </div>
         )}

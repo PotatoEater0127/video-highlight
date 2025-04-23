@@ -1,29 +1,25 @@
 import { useEffect, useRef } from "react";
 import { useHighlightStore } from "../store";
-import { Section, Sentence } from "../types";
+import { Clip, Section } from "../types";
+import { formatTime } from "../utils/formatTime";
 
 export const TranscriptEditor: React.FC = () => {
-  const { transcript, currentTime, jumpToTime, toggleSentence } =
+  const { transcript, currentTime, jumpToTime, toggleClip } =
     useHighlightStore();
   const editorRef = useRef<HTMLDivElement>(null);
 
-  // Auto-scroll to the current sentence based on video playback time
+  // Auto-scroll to the current clip based on video playback time
   useEffect(() => {
     if (!transcript || !editorRef.current) return;
 
-    // Find the current sentence being played
-    const allSentences = transcript.sections.flatMap(
-      (section) => section.sentences
-    );
-    const currentSentence = allSentences.find(
-      (sentence) =>
-        currentTime >= sentence.startTime && currentTime <= sentence.endTime
+    // Find the current clip being played
+    const allClips = transcript.sections.flatMap((section) => section.clips);
+    const currentClip = allClips.find(
+      (clip) => currentTime >= clip.startTime && currentTime <= clip.endTime
     );
 
-    if (currentSentence) {
-      const sentenceEl = document.getElementById(
-        `sentence-${currentSentence.id}`
-      );
+    if (currentClip) {
+      const sentenceEl = document.getElementById(`sentence-${currentClip.id}`);
       if (sentenceEl) {
         sentenceEl.scrollIntoView({ behavior: "smooth", block: "center" });
       }
@@ -38,46 +34,36 @@ export const TranscriptEditor: React.FC = () => {
     );
   }
 
-  const formatTime = (seconds: number): string => {
-    const mins = Math.floor(seconds / 60);
-    const secs = Math.floor(seconds % 60);
-    return `${mins.toString().padStart(2, "0")}:${secs
-      .toString()
-      .padStart(2, "0")}`;
-  };
-
-  const renderSentence = (sentence: Sentence, sectionId: string) => {
+  const renderSentence = (clip: Clip, sectionId: string) => {
     const isActive =
-      currentTime >= sentence.startTime && currentTime <= sentence.endTime;
+      currentTime >= clip.startTime && currentTime <= clip.endTime;
 
     return (
       <div
-        key={sentence.id}
-        id={`sentence-${sentence.id}`}
+        key={clip.id}
+        id={`sentence-${clip.id}`}
         className={`p-2 my-1 rounded transition-colors flex items-start ${
-          isActive ? "bg-yellow-100" : sentence.selected ? "bg-blue-50" : ""
+          isActive ? "bg-yellow-100" : clip.selected ? "bg-blue-50" : ""
         }`}
       >
         <button
-          onClick={() => jumpToTime(sentence.startTime)}
+          onClick={() => jumpToTime(clip.startTime)}
           className="text-gray-500 mr-2 hover:text-blue-500 transition-colors cursor-pointer"
         >
-          {formatTime(sentence.startTime)}
+          {formatTime(clip.startTime)}
         </button>
         <div className="flex-grow">
           <label className="flex items-center cursor-pointer">
             <input
               type="checkbox"
-              checked={sentence.selected}
-              onChange={() => toggleSentence(sectionId, sentence.id)}
+              checked={clip.selected}
+              onChange={() => toggleClip(sectionId, clip.id)}
               className="hidden"
             />
             <span
-              className={`${
-                sentence.selected ? "text-black" : "text-gray-700"
-              }`}
+              className={`${clip.selected ? "text-black" : "text-gray-700"}`}
             >
-              {sentence.text}
+              {clip.text}
             </span>
           </label>
         </div>
@@ -90,9 +76,7 @@ export const TranscriptEditor: React.FC = () => {
       <div key={section.id} className="mb-6">
         <h3 className="text-lg font-semibold mb-2">{section.title}</h3>
         <div className="pl-2 border-l-2 border-gray-200">
-          {section.sentences.map((sentence) =>
-            renderSentence(sentence, section.id)
-          )}
+          {section.clips.map((clip) => renderSentence(clip, section.id))}
         </div>
       </div>
     );

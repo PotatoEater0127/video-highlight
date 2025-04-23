@@ -108,7 +108,7 @@ export const processVideo = async (
       {
         id: uuid(),
         title: "Product Overview",
-        sentences: SENTENCES.slice(0, 5).map((text, index) => ({
+        clips: SENTENCES.slice(0, 5).map((text, index) => ({
           id: uuid(),
           text,
           startTime: timestamps[index].start,
@@ -119,7 +119,7 @@ export const processVideo = async (
       {
         id: uuid(),
         title: "Features & Benefits",
-        sentences: SENTENCES.slice(5, 10).map((text, index) => ({
+        clips: SENTENCES.slice(5, 10).map((text, index) => ({
           id: uuid(),
           text,
           startTime: timestamps[index + 5].start,
@@ -130,7 +130,7 @@ export const processVideo = async (
       {
         id: uuid(),
         title: "Conclusion",
-        sentences: SENTENCES.slice(10).map((text, index) => ({
+        clips: SENTENCES.slice(10).map((text, index) => ({
           id: uuid(),
           text,
           startTime: timestamps[index + 10].start,

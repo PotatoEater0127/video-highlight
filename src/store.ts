@@ -15,7 +15,7 @@ interface HighlightStore {
   setProcessing: (isProcessing: boolean) => void;
   setCurrentTime: (time: number) => void;
   setTranscript: (transcript: Transcript) => void;
-  toggleSentence: (sectionId: string, sentenceId: string) => void;
+  toggleClip: (sectionId: string, clipId: string) => void;
   jumpToTime: (time: number) => void;
 }
 
@@ -35,19 +35,19 @@ export const useHighlightStore = create<HighlightStore>((set) => ({
 
   setTranscript: (transcript: Transcript) => set({ transcript }),
 
-  toggleSentence: (sectionId: string, sentenceId: string) =>
+  toggleClip: (sectionId: string, clipId: string) =>
     set((state) => {
       if (!state.transcript) return state;
 
       const updatedSections = state.transcript.sections.map((section) => {
         if (section.id !== sectionId) return section;
 
-        const updatedSentences = section.sentences.map((sentence) => {
-          if (sentence.id !== sentenceId) return sentence;
-          return { ...sentence, selected: !sentence.selected };
+        const updatedClips = section.clips.map((clip) => {
+          if (clip.id !== clipId) return clip;
+          return { ...clip, selected: !clip.selected };
         });
 
-        return { ...section, sentences: updatedSentences };
+        return { ...section, clips: updatedClips };
       });
 
       return { transcript: { sections: updatedSections } };
