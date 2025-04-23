@@ -16,11 +16,11 @@ This is a web application that allows users to create highlight clips from uploa
 
 ## 🔍 Overview
 
-The Video Highlight Tool is a web application built using React, TypeScript, and Tailwind CSS. It allows users to upload videos and use AI-powered transcription to create engaging highlight reels. The application features a split-screen interface with a transcript editor on one side and a video preview on the other.
+The Video Highlight Tool is a web application built using React, TypeScript, and Tailwind CSS. It allows users to upload videos and use AI-powered transcription(mocked) to create engaging highlight reels. The application features a split-screen interface with a transcript editor on one side and a video preview on the other.
 
 ## ✨ Features
 
-- 📤 Video upload and processing
+- 📤 Video upload and processing (mocked for this demo)
 - 🤖 AI-powered transcript generation (mocked for this demo)
 - 🖥️ Split-screen interface with transcript editor and video preview
 - ✅ Select/unselect sentences for creating custom highlights
@@ -28,14 +28,14 @@ The Video Highlight Tool is a web application built using React, TypeScript, and
 - 💬 Transcript overlay on the video
 - 📱 Responsive design for desktop and mobile
 
-## 🛠️ Technology Stack
+## 🛠️ Technology Stack - All for Simplicity
 
 - **Frontend**: React 19, TypeScript
 - **State Management**: Zustand with immer
 - **Styling**: Tailwind CSS
 - **Build Tool**: Vite
 - **Utilities**: UUID for ID generation
-- **APIs**: Mock API for demo purposes
+- **APIs**: Utils functions to mock API behavior for demo purposes
 
 ## 💻 Prerequisites
 
@@ -46,7 +46,7 @@ Before you begin, ensure you have the following installed:
 
 ## 🚀 Installation
 
-1. Clone the repository: `git clone https://github.com/your-username/video-highlight.git`
+1. Clone the repository: `git clone https://github.com/your-username/video-highlight.git](https://github.com/PotatoEater0127/video-highlight.git`
 2. Navigate to the project directory: `cd video-highlight`
 3. Install dependencies: `npm install`
 4. Start the development server: `npm run dev`
@@ -55,11 +55,11 @@ Before you begin, ensure you have the following installed:
 ## 📋 Usage
 
 1. Launch the application in your browser
-2. Upload a video file using the drag-and-drop interface or file selector
+2. Upload a video file (must be longer than 15 seonds)
 3. Wait for the AI to process the video and generate a transcript (mock processing)
 4. Use the left panel to select/unselect sentences for your highlight clips
 5. Preview your highlight compilation in the right panel
-6. Click on timestamps or sentences to navigate to specific parts of the video
+6. Click on timestamps to navigate to specific parts of the video
 
 ## 📂 Project Structure
 
