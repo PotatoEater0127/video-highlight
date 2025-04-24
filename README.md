@@ -3,7 +3,7 @@
 This is a web application that allows users to create highlight clips from uploaded videos and add transcripts to these clips.
 
 ## Demo
-https://video-highlight.vercel.app/
+**https://video-highlight.vercel.app/**
 
 ## 📑 Table of Contents
 
