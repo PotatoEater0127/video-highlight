@@ -50,7 +50,7 @@ Before you begin, ensure you have the following installed:
 
 ## 🚀 Installation
 
-1. Clone the repository: `git clone https://github.com/your-username/video-highlight.git](https://github.com/PotatoEater0127/video-highlight.git`
+1. Clone the repository: `git clone https://github.com/PotatoEater0127/video-highlight.git`
 2. Navigate to the project directory: `cd video-highlight`
 3. Install dependencies: `npm install`
 4. Start the development server: `npm run dev`
